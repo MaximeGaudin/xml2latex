@@ -1,9 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+# ====================================================================
 # Author : Maxime Gaudin
 # Name : xml2latex
-# 
+# ====================================================================
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
@@ -21,7 +22,6 @@ import sys
 from xml.dom import minidom
 
 indentLevel = 0
-
 def getIndents():
 	global indentLevel
 	return '\t' * indentLevel
@@ -41,7 +41,7 @@ def handleEnvironment(N, isOpening):
 		indentLevel -= 1	
 		print getIndents() + "\\end{" + N.tagName + "}"
 	
-def handleParametrizedCommand(N, isOpening):
+def handleCommand(N, isOpening):
 	if(isOpening):
 		output = getIndents() + "\\" + N.tagName
 		
@@ -52,8 +52,16 @@ def handleParametrizedCommand(N, isOpening):
 
 def handleNode(N, isOpening):
 	if N.nodeType == N.ELEMENT_NODE:
-		if len(N.childNodes) == 0 or len(N.childNodes) == 1 and N.childNodes[0].nodeType == N.TEXT_NODE: handleParametrizedCommand(N, isOpening)
+		if len(N.childNodes) == 0 or len(N.childNodes) == 1 and N.childNodes[0].nodeType == N.TEXT_NODE: handleCommand(N, isOpening)
 		else: handleEnvironment(N, isOpening)
-	
-xmlFile = minidom.parse(sys.argv[1])
-explore(xmlFile)
+
+def printUsage():
+	print "**** XML to LaTeX converter              ****"
+	print "**** Usage : python xml2latex [YourFile] ****"
+
+if len(sys.argv) == 1: printUsage()
+else:
+	try: 
+		xmlFile = minidom.parse(sys.argv[1])
+		explore(xmlFile)
+	except: sys.stderr.write("** Bad formed xml file. Parse aborted.")
