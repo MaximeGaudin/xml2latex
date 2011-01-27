@@ -71,8 +71,8 @@ use them to format your document !
 A Last One
 ----------
 Obviously, it handles syntax like :
-        <annuaire>
-	        <somebody lastName="GAUDIN" surname="Maxime">gaudin.maxime@gmail.com</somebody>
+	<annuaire>
+		<somebody lastName="GAUDIN" surname="Maxime">gaudin.maxime@gmail.com</somebody>
 		<somebody lastName="ST-GEORGES" surname="Julie">XXX@gmail.com</somebody> 
 	</annuaire>
 
