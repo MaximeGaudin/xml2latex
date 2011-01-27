@@ -7,12 +7,10 @@ Purpose
 Exporting xml files to latex can be boring and a pretty common task (especially if your teachers are old school nomenclature's lover).
 That's why I designed a little tool that export automaticaly your xml to a latex-friendly form.
 
-Features
---------
-* Handle 
-
 Example
 -------
+** DON'T FORGET TO LOOK AT THE BETTER EXEMPLE SECTION BELOW **
+
 Let's say you have to export this file :
 	<annuaire>
 		<personne>
@@ -47,7 +45,7 @@ Nothing complicated but so useful !
 
 Better exemple
 --------------
-As you can see, the previous exemple works perfectly but is no so latex friendly (in an array for instance). 
+As you can see, the previous exemple works perfectly but is no so latex friendly (if you scheduled to use it in an array for instance). 
 That's why you have to 2 use cases :
 - You have to convert xml file not written for that purpose : Then get prepared to hack latex
 - You have to write a xml fil espacially for being converted to latex : Yeah, it will be cake walk !
@@ -64,4 +62,3 @@ That's better, let's see the result :
 		\personne{GAUDIN}{Maxime}{gaudin.maxime@gmail.com}
 		\personne{ST-GEORGES}{Julie}{XXX@gmail.com}
 	\end{annuaire}
-
