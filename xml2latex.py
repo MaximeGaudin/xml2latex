@@ -41,21 +41,19 @@ def handleEnvironment(N, isOpening):
 		indentLevel -= 1	
 		print getIndents() + "\\end{" + N.tagName + "}"
 	
-def handleCommand(N, isOpening):
-	if(isOpening): print getIndents() + "\\" + N.tagName
-
 def handleParametrizedCommand(N, isOpening):
 	if(isOpening):
 		output = getIndents() + "\\" + N.tagName
-		for k in N.attributes.keys(): output += "{" + N.attributes[k].value + "}"
-		output += "{" + N.childNodes[0].data + "}"
+		
+		for k in N.attributes.keys(): output += "{" + N.attributes[k].value + "}" 	# Handle attributes
+		if len(N.childNodes) == 1: output += "{" + N.childNodes[0].data + "}"		# Handle datas
 
 		print output
 
 def handleNode(N, isOpening):
-	if N.nodeType == N.ELEMENT_NODE and len(N.childNodes) == 1 and N.childNodes[0].nodeType == N.TEXT_NODE: handleParametrizedCommand(N, isOpening)
-	elif N.nodeType == N.ELEMENT_NODE and len(N.attributes) == 0 and len(N.childNodes) == 0: handleCommand(N, isOpening)
-	elif N.nodeType == N.ELEMENT_NODE: handleEnvironment(N, isOpening)
+	if N.nodeType == N.ELEMENT_NODE:
+		if len(N.childNodes) == 0 or len(N.childNodes) == 1 and N.childNodes[0].nodeType == N.TEXT_NODE: handleParametrizedCommand(N, isOpening)
+		else: handleEnvironment(N, isOpening)
 	
 xmlFile = minidom.parse(sys.argv[1])
 explore(xmlFile)

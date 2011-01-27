@@ -16,19 +16,31 @@ Example
 Let's say you have to export this file :
 	<annuaire>
 		<personne>
-			<nom>GAUDIN</nom>
-			<prenom>Maxime</prenom>
+			<lastName>GAUDIN</lastName>
+			<surname>Maxime</surname>
 			<email>gaudin.maxime@gmail.com</email>
 		</personne>
 		
 		<personne>
-			<nom>ST-GEORGES</nom>
-			<prenom>Julie</prenom>
+			<lastName>ST-GEORGES</lastName>
+			<surname>Julie</surname>
 			<email>XXX@gmail.com</email>
 		</personne>
 	</annuaire>
 
 Just call my script with : python xml2latex yourFile.xml, and then it produces (automatically):
+	\begin{annuaire}
+		\begin{personne}
+			\lastName{GAUDIN}
+			\surname{Maxime}
+			\email{gaudin.maxime@gmail.com}
+		\end{personne}
+		\begin{personne}
+			\lastName{ST-GEORGES}
+			\surname{Julie}
+			\email{XXX@gmail.com}
+		\end{personne}
+	\end{annuaire}
 
 
 Nothing complicated but so useful !
@@ -47,4 +59,9 @@ Indeed, xml2latex supports attributes and the last xml will be better if written
 	</annuaire>
 
 That's better, let's see the result :
+
+	\begin{annuaire}
+		\personne{GAUDIN}{Maxime}{gaudin.maxime@gmail.com}
+		\personne{ST-GEORGES}{Julie}{XXX@gmail.com}
+	\end{annuaire}
 
