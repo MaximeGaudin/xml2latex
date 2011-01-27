@@ -49,7 +49,7 @@ As you can see, the previous exemple works perfectly but is no so latex friendly
 In fact, you have 2 use cases :
 
 - You have to convert xml file not written for that purpose : Then get prepared to hack latex
-- You have to write a xml fil espacially for being converted to latex : Yeah, it will be cake walk !
+- You have to write a xml file espacially for being converted to latex : Yeah, it will be cake walk !
 
 Indeed, xml2latex supports attributes and the last xml will be better if written like :
 	<annuaire>
@@ -63,3 +63,12 @@ That's better, let's see the result :
 		\personne{GAUDIN}{Maxime}{gaudin.maxime@gmail.com}
 		\personne{ST-GEORGES}{Julie}{XXX@gmail.com}
 	\end{annuaire}
+
+BTW, it also supports empty markups like : <jumpline/>, use them to format your document !
+
+Advices
+-------
+* Use LaTex
+* Contribute
+* Mail me :D
+
