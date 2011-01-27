@@ -46,9 +46,9 @@ Nothing complicated but so useful !
 Better exemple
 --------------
 As you can see, the previous exemple works perfectly but is no so latex friendly (if you scheduled to use it in an array for instance). 
-That's why you have to 2 use cases :
-- You have to convert xml file not written for that purpose : Then get prepared to hack latex
-- You have to write a xml fil espacially for being converted to latex : Yeah, it will be cake walk !
+In fact, you have 2 use cases :
+	- You have to convert xml file not written for that purpose : Then get prepared to hack latex
+	- You have to write a xml fil espacially for being converted to latex : Yeah, it will be cake walk !
 
 Indeed, xml2latex supports attributes and the last xml will be better if written like :
 	<annuaire>
