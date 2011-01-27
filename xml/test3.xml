@@ -1,0 +1,32 @@
+<borders>
+<border part="Général" name="potentiometre[1..P]">Résistance variable.</border>
+<border part="Général" name="horloge">Système électronique délivrant l'heure actuelle du fuseau horaire où le système est installé.</border>
+
+<!-- Lumière -->
+<border part="Lumière" name="interrupteurModeLampes">Interrupteur classique à deux états.</border>
+<border part="Lumière" name="capteurLuminositeInterieure">Capteur photosensible placé à l'intérieur de la pièce.</border>
+<border part="Lumière" name="ampoule[1..A]">Ampoule à incandescance et à luminosité variable.</border>
+<border part="Lumière" name="potentiometreLuminositePreferee">Une résistance variable.</border> 
+
+<!-- Son -->
+<border part="Son" name="repartiteurSon">Commutateur à 3 états permettant de répartir la sortie son de la TV ou de la chaine Hi-Fi ou encore d'aucun des deux sur les enceintes.</border>
+<border part="Son" name="capteurAllumageTV">Capteur \textsl{ToR} connecté à l'alimentation de la télévision.</border>
+<border part="Son" name="amplificateur">Amplificateur de son relié à la chaine Hi-Fi et à la télévision. La sortie de cet amplificateur est connectée au répartiteur de son.</border>
+<border part="Son" name="potentiometreVolume">Résistance variable.</border>
+
+<!-- Présence -->
+<border part="Présence" name="capteursPresence[1..K]">Couple de capteurs, séparés par 5 cm, composé d'un réflecteur et d'une cellule photosensible placé sur le cadre de la porte du côté exterieur.</border>
+
+<!-- Store -->
+<border part="Stores" name="interrupteurModeStores">Interrupteur classique à deux états.</border>
+<border part="Stores" name="capteurLuminositeStore[1..S]">Capteur photosensible placé sur le store i, sur la face extérieure de celui-ci.</border>
+<border part="Stores" name="actionneurMoteurStore[1..S]">Actionneur d'un moteur à courant continu relié au bras d'enroulement du store i.</border>
+<border part="Stores" name="interfaceCommandeStore[1..S]">Interrupteur monostable à trois états fixé au mur. La position stable de l'interrupteur est "ouvert".</border> 
+<border part="Stores" name="capteurButeeHaute[1..S]">Capteur de contact fixé sur la partie haute du store i.</border>
+<border part="Stores" name="capteurButeeBasse[1..S]">Capteur de contact fixé sur la partie basse du store i.</border>
+
+<!-- Gestion de l'heure -->
+<border part="Gestion de l'heure" name="configurateurHeureReveil">Interface contenant un afficheur et 3 boutons poussoirs : Un bouton libellé "set", un bouton libellé "+" et un bouton libellé "-".</border>
+<border part="Gestion de l'heure" name="configurateurHeureSommeil">Interface contenant un afficheur et 3 boutons poussoirs : Un bouton libellé "set", un bouton libellé "+" et un bouton libellé "-".</border>
+<border part="Gestion de l'heure" name="configurateurReveil">Interface contenant un interrupteur bistable et un bouton poussoir.</border>
+</borders>
