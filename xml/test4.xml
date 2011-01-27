@@ -1,0 +1,343 @@
+<primitives>
+
+<!-- <proc name="monNom" type="monType">Ma description</proc> -->
+
+<!-- Commander store -->
+
+<proc name="calculerEtat" type="Indépendant">Vérifie périodiquement si l’heure actuelle rentre dans la période de sommeil programmée (dans quel cas il envoie étatSommeil) ou pas (il envoie étatVeille).
+
+\begin{algorithmic}
+\REQUIRE heure, heureReveil, heureSommeil
+\ENSURE etatVeille, etatSommeil
+
+\IF{heureSommeil $\lt$ heureReveil}
+\IF{heure $\gt$ heureReveil \OR heure $\lt$ heureSommeil}
+\EMIT{etatVeille}
+\ELSE
+\EMIT{etatSommeil}
+\ENDIF
+\ELSE
+\IF{heure $\gt$ heureReveil \AND heure $\lt$ heureSommeil}
+\EMIT{etatVeille}
+\ELSE
+\EMIT{etatSommeil}
+\ENDIF
+\ENDIF
+\end{algorithmic}
+</proc>
+
+<!-- Contrôler store -->
+
+<proc name="fermerStorei" type="Subordonné">
+\begin{algorithmic}
+\ENSURE ordreStore$\lt$i$\gt$
+
+\STATE ordreStore$\lt$i$\gt$ \assign -5
+\end{algorithmic}
+</proc>
+
+<!-- Scruter état -->
+
+<!-- YOANN -->
+
+<proc name="AvertirPeriodiquement" type="Indépendant">
+Envoie un événement «~top~» périodiquement. La période est constante, et le premier événement lancé l'est dès l'initialisation du processus.
+</proc>
+
+<proc name="ControlerLampei" type="Indépendant">
+À chaque modification des entrées, met à jour ses sorties. On admet l'existence d'une fonction ou d'une formule simple (modélisée par \texttt{tensionAdequate}), permettant de calculer la tension à appliquer aux bornes d'une ampoule à partir d'une intensité lumineuse désirée.
+
+\begin{algorithmic}
+\REQUIRE IntensiteLumineuseLampes (variable), tensionPotentiometre$\lt$i$\gt$, modeLampes
+\ENSURE tensionAmpoule$\lt$i$\gt$
+
+\IF{modeLampes = Manuel}
+\STATE tensionLampe$\lt$i$\gt$ \assign tensionPotentiometre$\lt$i$\gt$
+	\ELSE
+\STATE tensionLampe$\lt$i$\gt$ \assign tensionAdequate(IntensiteLumineuseLampes)
+	\ENDIF
+	\end{algorithmic}
+
+	</proc>
+
+
+
+	<proc name="AugmenterIntensite" type="Subordonné">
+	\begin{algorithmic}
+	\REQUIRE IntensiteLumineuseLampes, IntensiteMax, PasIntensite
+\ENSURE IntensiteLumineuseLampes, intensiteMaxAtteinte (optionnel)
+
+	\IF{IntensiteLumineuseLampes $\gt$ IntensiteMax}
+	\EMIT{intensiteMaxAtteinte}
+	\ELSE
+	\STATE IntensiteLumineuseLampes \assign IntensiteLumineuseLampes + PasIntensite
+	\ENDIF
+	\end{algorithmic}
+	>>>>>>> 3369f8914fa7d1ed7a4eaf6527a51cf4d1a87f9c:Rapport/xml/primitives.xml
+	</proc>
+
+
+
+	<proc name="DiminuerIntensite" type="Subordonné">
+	\begin{algorithmic}
+
+	\REQUIRE IntensiteLumineuseLampes, IntensiteMin, PasIntensite
+\ENSURE IntensiteLumineuseLampes, intensiteMinAtteinte (optionnel)
+
+	\COMMENT{IntensiteMin vaut 0 et est représentée de cette manière uniquement dans un souci de cohérence.}
+
+	\IF{IntensiteLumineuseLampes $\lt$ IntensiteMin}
+	\EMIT{intensiteMinAtteinte}
+	\ELSE
+	\STATE IntensiteLumineuseLampes \assign IntensiteLumineuseLampes - PasIntensite
+	\ENDIF
+
+	\end{algorithmic}
+	</proc>
+
+
+
+	<proc name="AnnulerIntensite" type="Subordonné">
+	\begin{algorithmic}
+	\REQUIRE IntensiteLumineuseLampes, IntensiteMin
+	\ENSURE IntensiteLumineuseLampes
+
+	\COMMENT{IntensiteMin vaut 0 et est représentée de cette manière uniquement dans un souci de cohérence.}
+
+	\STATE IntensiteLumineuseLampes \assign IntensiteMin
+	\end{algorithmic}
+	</proc>
+
+	<!-- présence -->
+
+	<proc name="InitialiserEtat" type="Subordonné">Permet de déterminer, et par suite d'initialiser l'état du processus parent (ControlerModeSommeil)
+	\begin{algorithmic}
+	\REQUIRE reveilAutomatiqueActif, heure, heureSommeil, heureReveil
+	\ENSURE veilleActive ou veilleInactive ou sommeilActif ou sommeilInactif
+
+	\IF{reveilAutomatiqueActif}
+	\IF{heureSommeil $\lt$ heureReveil}
+	\IF{heure $\gt$ heureReveil \OR heure $\lt$ heureSommeil}
+	\EMIT{veilleActive}
+	\ELSE
+	\EMIT{sommeilActif}
+	\ENDIF
+	\ELSE
+	\IF{heure $\gt$ heureReveil \AND heure $\lt$ heureSommeil}
+	\EMIT{veilleActive}
+	\ELSE
+	\EMIT{sommeilActif}
+	\ENDIF
+	\ENDIF
+	\ELSE
+	\IF{heureSommeil $\lt$ heureReveil}
+	\IF{heure $\gt$ heureReveil \OR heure $\lt$ heureSommeil}
+	\EMIT{veilleInactive}
+	\ELSE
+	\EMIT{sommeilInactif}
+	\ENDIF
+	\ELSE
+	\IF{heure $\gt$ heureReveil \AND heure $\lt$ heureSommeil}
+	\EMIT{veilleInactive}
+	\ELSE
+	\EMIT{sommeilInactif}
+	\ENDIF
+	\ENDIF
+	\ENDIF
+
+	\end{algorithmic}
+	</proc>
+
+	<proc name="commanderStorei" type="Indépendant">
+	\begin{algorithmic}
+\REQUIRE buteeHaute$\lt$i$\gt$, buteeBasse$\lt$i$\gt$, commandeUtilisateurStore$\lt$i$\gt$, modeStores, ordreStore$\lt$i$\gt$ (variable)
+	\ENSURE commandeMoteurStore$\lt$i$\gt$
+
+	\IF{modeStores = Manuel}
+	\STATE ordre \assign commandeUtilisateurStore$\lt$i$\gt$
+	\ELSE
+	\STATE ordre \assign ordreStore$\lt$i$\gt$
+	\ENDIF
+
+	\IF {(ordre $\lt$ 0 \AND \NOT buteeBasse$\lt$i$\gt$) \OR (ordre $\gt$ 0 \AND \NOT buteeHaute$\lt$i$\gt$)}
+	\STATE commandeMoteurStore$\lt$i$\gt$ \assign ordreStore
+	\ELSE
+	\STATE commandeMoteurStore$\lt$i$\gt$ \assign 0
+	\ENDIF
+	\end{algorithmic}
+	</proc>
+
+
+	<proc name="propagerOrdreStorei" type="Subordonné">
+	\begin{algorithmic}
+	\REQUIRE ordreStore (variable)
+\ENSURE ordreStore$\lt$i$\gt$ (variable)
+
+	\STATE ordreStore$\lt$i$\gt$ \assign ordreStore
+	\end{algorithmic}
+	</proc>
+
+	<!-- Compter nb personnes -->
+
+	<proc name="CompterNbPersonnes" type="Subordonné">
+	\begin{algorithmic}
+	\REQUIRE nbPersonnes
+	\ENSURE Nulle, NonNulle
+
+	\IF{nbPersonnes = 0}
+	\EMIT{Nulle}
+	\ELSE
+	\EMIT{NonNulle}
+	\ENDIF
+	\end{algorithmic}
+	</proc>
+
+	<!-- Incrémenter -->
+
+	<proc name="incrementer" type="Subordonné">
+	\begin{algorithmic}
+	\REQUIRE nbPersonnes
+	\ENSURE nbPersonnes
+
+	\STATE nbPersonnes \assign nbPersonnes + 1
+	\end{algorithmic}
+	</proc>
+
+	<!-- Décrémenter -->
+
+	<proc name="decrementer" type="Subordonné">
+	\begin{algorithmic}
+	\REQUIRE nbPersonnes
+	\ENSURE nbPersonnes
+
+	\STATE nbPersonnes \assign nbPersonnes - 1
+	\end{algorithmic}
+	</proc>
+
+	<proc name="incrementerHeures" type="Subordonné">
+	\begin{algorithmic}
+	\REQUIRE heures
+	\ENSURE heures
+
+	\STATE heures \assign heures + 1
+	\end{algorithmic}
+	</proc>
+
+	<proc name="decrementerHeures" type="Subordonné">
+	\begin{algorithmic}
+	\REQUIRE heures
+	\ENSURE heures
+
+	\STATE heures \assign heures - 1
+	\end{algorithmic}
+	</proc>
+
+	<proc name="incrementerMinutes" type="Subordonné">
+	\begin{algorithmic}
+	\REQUIRE minutes
+	\ENSURE minutes
+
+	\STATE minutes\assign minutes+ 1
+	\end{algorithmic}
+	</proc>
+
+	<proc name="decrementerMinutes" type="Subordonné">
+	\begin{algorithmic}
+	\REQUIRE minutes
+	\ENSURE minutes
+
+	\STATE minutes\assign minutes - 1
+	\end{algorithmic}
+	</proc>
+
+	<proc name="convertirHeure" type="Indépendant"> Convertit les champs “heures” et “minutes” en une valeur unique (secondes depuis minuit)
+
+	\begin{algorithmic}
+
+	\REQUIRE heures, minutes
+	\ENSURE heureReveil, infoCadranHeureReveil
+
+	\STATE heureReveil \assign heures * 3600 + minutes * 60
+	\STATE infoCadranHeureReveil \assign heureReveil
+	\end{algorithmic}
+	</proc>
+
+	<!-- GAETAN -->
+
+	<!-- Selectionner source -->
+
+	<proc name="SelectionnerSource" type="Subordonné">
+	\begin{algorithmic}
+	\REQUIRE TVAllumee
+	\ENSURE selectionEntree
+
+	\IF{TVAllumee = vrai}
+	\STATE SelectionEntree \assign TV
+	\ELSE
+	\STATE SelectionEntree \assign HiFi
+	\ENDIF
+	\end{algorithmic}
+	</proc>
+
+	<!-- Surveiller Telephone -->
+
+	<proc name="SurveillerTelephone" type="Subordonné">
+	\begin{algorithmic}
+	\REQUIRE donneesTelephone
+	\ENSURE ligneOccupee, ligneLibre
+
+	\IF{donneesTelephone = 0}
+	\EMIT{ligneLibre}
+	\ELSE
+	\EMIT{ligneOccupee}
+	\ENDIF
+	\end{algorithmic}
+	</proc>
+
+	<!-- Activer -->
+
+	<proc name="Activer" type="Subordonné">
+	\begin{algorithmic}
+	\REQUIRE volumeUtilisateur
+	\ENSURE volume
+	\STATE volume \assign volumeUtilisateur
+	\end{algorithmic}
+	</proc>
+
+	<!-- DesActiver -->
+
+	<proc name="Desactiver" type="Subordonné">
+	\begin{algorithmic}
+	\ENSURE volume
+	\STATE volume \assign 0
+	\end{algorithmic}
+	</proc>
+
+	<!-- ArreterControleStore -->
+
+	<proc name="ArreterControleStore" type="Subordonné">
+	\begin{algorithmic}
+	\ENSURE ordreStore
+	\STATE ordreStore \assign 0
+	\end{algorithmic}
+	</proc>
+
+	<!-- monterStore -->
+
+	<proc name="monterStore" type="Subordonné">
+	\begin{algorithmic}
+	\ENSURE ordreStore
+	\STATE ordreStore \assign 5
+	\end{algorithmic}
+	</proc>
+
+	<!-- descendreStore -->
+
+	<proc name="descendreStore" type="Subordonné">
+	\begin{algorithmic}
+	\ENSURE ordreStore
+	\STATE ordreStore \assign -5
+	\end{algorithmic}
+	</proc>
+	</primitives>
+
