@@ -13,31 +13,31 @@ Example
 
 Let's say you have to export this file :
 	<annuaire>
-		<personne>
+		<somebody>
 			<lastName>GAUDIN</lastName>
 			<surname>Maxime</surname>
 			<email>gaudin.maxime@gmail.com</email>
-		</personne>
+		</somebody>
 		
-		<personne>
+		<somebody>
 			<lastName>ST-GEORGES</lastName>
 			<surname>Julie</surname>
 			<email>XXX@gmail.com</email>
-		</personne>
+		</somebody>
 	</annuaire>
 
 Just call my script with : python xml2latex yourFile.xml, and then it produces (automatically):
 	\begin{annuaire}
-		\begin{personne}
+		\begin{somebody}
 			\lastName{GAUDIN}
 			\surname{Maxime}
 			\email{gaudin.maxime@gmail.com}
-		\end{personne}
-		\begin{personne}
+		\end{somebody}
+		\begin{somebody}
 			\lastName{ST-GEORGES}
 			\surname{Julie}
 			\email{XXX@gmail.com}
-		\end{personne}
+		\end{somebody}
 	\end{annuaire}
 
 
@@ -51,21 +51,36 @@ In fact, you have 2 use cases :
 - You have to convert xml file not written for that purpose : Then get prepared to hack latex
 - You have to write a xml file espacially for being converted to latex : Yeah, it will be cake walk !
 
-Indeed, xml2latex supports attributes and the last xml will be better if written like :
+Indeed, xml2latex handles attributes and the last xml will be better if written like :
 	<annuaire>
-		<personne lastName="GAUDIN" surname="Maxime" email="gaudin.maxime@gmail.com"/>
-		<personne lastName="ST-GEORGES" surname="Julie" email="XXX@gmail.com"/> 
+		<somebody lastName="GAUDIN" surname="Maxime" email="gaudin.maxime@gmail.com"/>
+		<somebody lastName="ST-GEORGES" surname="Julie" email="XXX@gmail.com"/> 
 	</annuaire>
 
 That's better, let's see the result :
 
 	\begin{annuaire}
-		\personne{GAUDIN}{Maxime}{gaudin.maxime@gmail.com}
-		\personne{ST-GEORGES}{Julie}{XXX@gmail.com}
+		\somebody{GAUDIN}{Maxime}{gaudin.maxime@gmail.com}
+		\somebody{ST-GEORGES}{Julie}{XXX@gmail.com}
 	\end{annuaire}
 
-BTW, it also supports empty markups like : <jumpline/>, use them to format your document !
+BTW, it also handles empty markups like : 
+	<jumpline/> 
+use them to format your document !
 
+A Last One
+----------
+Obviously, it handles syntax like :
+        <annuaire>
+	        <somebody lastName="GAUDIN" surname="Maxime">gaudin.maxime@gmail.com</somebody>
+		<somebody lastName="ST-GEORGES" surname="Julie">XXX@gmail.com</somebody> 
+	</annuaire>
+
+and produces :
+	\begin{annuaire}
+		\somebody{GAUDIN}{Maxime}{gaudin.maxime@gmail.com}
+		\somebody{ST-GEORGES}{Julie}{XXX@gmail.com}
+	\end{annuaire}
 Advices
 -------
 * Use LaTex
