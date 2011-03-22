@@ -75,13 +75,15 @@ def generatePreambule():
 	for c in commands : preambule += "\\newcommand{" + c + "}[]\n{\n}\n\n"
 
 def printUsage():
-	print "**** XML to LaTeX converter              ****"
-	print "**** Usage : python xml2latex [YourFile] ****"
+	print "**** XML to LaTeX converter             	****"
+	print "**** Usage : python xml2latex [-p|-c] [YourFile]	****"
+	print "**** Use -p to print preambule only  		****"
+	print "**** Use -c to print code only	  		****"
 
 if len(sys.argv) == 1: printUsage()
 else:
 	try: 
-		xmlFile = minidom.parse(sys.argv[1])
+		xmlFile = minidom.parse(sys.argv[len(sys.argv) - 1])
 	except: sys.stderr.write("** Bad formed xml file. Parse aborted.")
 
 	try:
@@ -89,10 +91,9 @@ else:
 		generatePreambule()
 	except: sys.stderr.write("** Oups ! Error")
 
-
 	if len(sys.argv) == 3: 
-		if sys.argv[2] == "-p": print preambule
-		if sys.argv[2] == "-c": print code 
+		if sys.argv[1] == "-p": print preambule
+		if sys.argv[1] == "-c": print code 
 	else:
 		print preambule
 		print code
