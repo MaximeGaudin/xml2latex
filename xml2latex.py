@@ -22,6 +22,9 @@ import sys
 from xml.dom import minidom
 
 indentLevel = 0
+environments = Set([])
+commands = Set([])
+
 def getIndents():
 	global indentLevel
 	return '\t' * indentLevel
@@ -34,17 +37,23 @@ def explore(xmlInput):
 
 def handleEnvironment(N, isOpening):
 	global indentLevel
+	global environments
+
 	if isOpening:
 		print getIndents() + "\\begin{" + N.tagName + "}"
 		indentLevel += 1
+		environments.add(N.tagName)
 	else :
 		indentLevel -= 1	
 		print getIndents() + "\\end{" + N.tagName + "}"
 	
 def handleCommand(N, isOpening):
+	global commands
+
 	if(isOpening):
 		output = getIndents() + "\\" + N.tagName
-		
+		commands.add(N.tagName)
+
 		for k in N.attributes.keys(): output += "{" + N.attributes[k].value + "}" 	# Handle attributes
 		if len(N.childNodes) == 1: output += "{" + N.childNodes[0].data + "}"		# Handle datas
 
