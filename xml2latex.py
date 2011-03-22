@@ -72,7 +72,7 @@ def handleNode(N, isOpening):
 def generatePreambule():
 	global preambule
 	for e in environments: preambule += "\\newenvironment{" + e + "}\n{\n}\n{\n}\n\n"
-	for c in commands : preambule += "\\newcommand{" + c + "}[]\n{\n}\n\n"
+	for c in commands : preambule += "\\newcommand{\\" + c + "}[]\n{\n}\n\n"
 
 def printUsage():
 	print "**** XML to LaTeX converter             	****"
