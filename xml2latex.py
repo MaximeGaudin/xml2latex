@@ -19,6 +19,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import sys
+import os
 from xml.dom import minidom
 
 indentLevel = 0
@@ -82,18 +83,27 @@ def printUsage():
 
 if len(sys.argv) == 1: printUsage()
 else:
+	if not os.path.exists(sys.argv[len(sys.argv) - 1]): 
+		print "Unknow file : " + sys.argv[len(sys.argv) - 1] + "..."
+		sys.stderr.write("** Aborting.\n")
+		exit(1)
+
 	try: 
 		xmlFile = minidom.parse(sys.argv[len(sys.argv) - 1])
-	except: sys.stderr.write("** Bad formed xml file. Parse aborted.")
+	except: 
+		sys.stderr.write("** Bad formed xml file. Parse aborted.\n")
+		exit(1)
 
 	try:
 		explore(xmlFile)
 		generatePreambule()
-	except: sys.stderr.write("** Oups ! Error")
+	except: 
+		sys.stderr.write("** Oups ! Error during exploration.\n")
+		exit(1)
 
 	if len(sys.argv) == 3: 
-		if sys.argv[1] == "-p": print preambule
-		if sys.argv[1] == "-c": print code 
+		if sys.argv[1] == "-p": print preambule.encode('utf-8', 'ignore')
+		if sys.argv[1] == "-c": print code.encode('utf-8', 'ignore')
 	else:
-		print preambule
-		print code
+		print preambule.encode('utf-8', ignore)
+		print code.encode('utf-8', ignore)
