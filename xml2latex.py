@@ -20,6 +20,7 @@
 
 import sys
 import os
+import getopt
 from xml.dom import minidom
 
 indentLevel = 0
@@ -47,6 +48,7 @@ def handleEnvironment(N, isOpening):
 	if isOpening:
 		code += getIndents() + "\\begin{" + N.tagName + "}\n"
 		indentLevel += 1
+		code += getIndents() + "\\" + N.tagName + "_header\n"
 		environments.add(N.tagName)
 	else :
 		indentLevel -= 1	
@@ -72,38 +74,81 @@ def handleNode(N, isOpening):
 
 def generatePreambule():
 	global preambule
-	for e in environments: preambule += "\\newenvironment{" + e + "}\n{\n}\n{\n}\n\n"
+	for e in environments: 
+		preambule += "\\newenvironment{" + e + "}\n{\n}\n{\n}\n\n"
+		preambule += "\\newcommand{\\" + e + "_header}{}\n\n"
 	for c in commands : preambule += "\\newcommand{\\" + c + "}[]\n{\n}\n\n"
 
-def printUsage():
-	print "**** XML to LaTeX converter             	****"
-	print "**** Usage : python xml2latex [-p|-c] [YourFile]	****"
-	print "**** Use -p to print preambule only  		****"
-	print "**** Use -c to print code only	  		****"
+def usage():
+	print "usage: python xml2latex.py [args] [option]"
+	print ""
+	print "List of arguments :"
+	print "    --input (-i) : Specifies the input file."
+	print ""
+	print "List of options :"
+	print "    --output (-o) : Specifies the output file. (Default : stdout)"
+	print "    --print-preambule (-p) : Generate preambule. (Default : True)"
+	print "    --print-code (-p) : Generate code. (Default : True)"
+	print "    --help (-h) : Print this text."
+	print ""
+	print "Author : Maxime Gaudin (2011)"
 
-if len(sys.argv) == 1: printUsage()
-else:
-	if not os.path.exists(sys.argv[len(sys.argv) - 1]): 
-		print "Unknow file : " + sys.argv[len(sys.argv) - 1] + "..."
-		sys.stderr.write("** Aborting.\n")
-		exit(1)
-
-	try: 
-		xmlFile = minidom.parse(sys.argv[len(sys.argv) - 1])
-	except: 
-		sys.stderr.write("** Bad formed xml file. Parse aborted.\n")
-		exit(1)
-
+def writeStringIntoFile(Str, Filename):
 	try:
-		explore(xmlFile)
-		generatePreambule()
-	except: 
-		sys.stderr.write("** Oups ! Error during exploration.\n")
-		exit(1)
+		f = open(Filename, "w")
+		f.write(Str)
+		f.close()
+	except:
+		sys.stderr.write("Error while writing ouput file")
 
-	if len(sys.argv) == 3: 
-		if sys.argv[1] == "-p": print preambule.encode('utf-8', 'ignore')
-		if sys.argv[1] == "-c": print code.encode('utf-8', 'ignore')
-	else:
-		print preambule.encode('utf-8', ignore)
-		print code.encode('utf-8', ignore)
+try:
+	opts, args = getopt.getopt(sys.argv[1:], "hi:o:pc", ["help", "input=", "output=", "print-preambule", "print-code"])
+except getopt.GetoptError, err:
+	print str(err) # will print something like "option -a not recognized"
+	usage()
+	sys.exit(2)
+
+inputFilename=""
+outputFilename=""
+enablePreambule=False
+enableCode=False
+
+for o, a in opts:
+	if o in ("-h", "--help"): usage()
+
+	elif o == "-p": enablePreambule=True
+	elif o == "-c": enableCode=True
+
+	elif o in ("-i", "--input"): inputFilename=a
+	elif o in ("-o", "--output"): outputFilename=a
+
+	else: assert False, "Unhandled option"	
+
+if inputFilename=="": 
+	sys.stderr.write("You must specifie an input file (-i) !\n")
+	usage()
+	exit(1)
+
+if enablePreambule == enableCode == False: 
+	enablePreambule = True
+	enableCode= True
+
+try: 
+	xmlFile = minidom.parse(inputFilename)
+except: 
+	sys.stderr.write("** Bad formed xml file. Parse aborted.\n")
+	exit(1)
+
+try:
+	explore(xmlFile)
+	if enablePreambule: generatePreambule()
+except: 
+	sys.stderr.write("** Oups ! Error during exploration.\n")
+	exit(1)
+
+output=""
+if enablePreambule: output +=  preambule.encode('utf-8', 'ignore')
+if enableCode: output += code.encode('utf-8', 'ignore')
+
+if outputFilename == "": print output
+else: writeStringIntoFile(output, outputFilename)
