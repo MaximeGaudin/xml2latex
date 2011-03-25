@@ -48,7 +48,7 @@ def handleEnvironment(N, isOpening):
 	if isOpening:
 		code += getIndents() + "\\begin{" + N.tagName + "}\n"
 		indentLevel += 1
-		code += getIndents() + "\\" + N.tagName + "_header\n"
+		code += getIndents() + "\\" + N.tagName + "Header\n"
 		environments.add(N.tagName)
 	else :
 		indentLevel -= 1	
@@ -76,7 +76,7 @@ def generatePreambule():
 	global preambule
 	for e in environments: 
 		preambule += "\\newenvironment{" + e + "}\n{\n}\n{\n}\n\n"
-		preambule += "\\newcommand{\\" + e + "_header}{}\n\n"
+		preambule += "\\newcommand{\\" + e + "Header}{}\n\n"
 	for c in commands : preambule += "\\newcommand{\\" + c + "}[]\n{\n}\n\n"
 
 def usage():
