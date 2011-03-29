@@ -4,8 +4,25 @@ Author
 
 Purpose
 -------
-Exporting xml files to latex can be boring and a pretty common task (especially if your teachers are old school nomenclature's lover).
+Exporting xml files to latex' arrays can be very boring, time consuming and a pretty common task (especially if your teachers are old school nomenclature's lover).
 That's why I designed a little tool that export automaticaly your xml to a latex-friendly form.
+
+Another pretty cool feature is the automatic preambule generation, see the Usage below.
+
+Usage
+-----
+	usage: python xml2latex.py [args] [option]
+	
+	List of arguments :
+	    --input (-i) : Specifies the input file.
+	
+	   List of options :
+	       --output (-o) : Specifies the output file. (Default : stdout)
+	       --print-preambule (-p) : Generate preambule. (Default : True)
+	       --print-code (-p) : Generate code. (Default : True)
+	       --help (-h) : Print this text.
+	
+	Author : Maxime Gaudin (2011)
 
 Example
 -------
@@ -26,7 +43,7 @@ Let's say you have to export this file :
 		</somebody>
 	</annuaire>
 
-Just call my script with : python xml2latex yourFile.xml, and then it produces (automatically):
+Just call my script with : python xml2latex -c -i yourFile.xml, and then it produces (automatically):
 	\begin{annuaire}
 		\begin{somebody}
 			\lastName{GAUDIN}
