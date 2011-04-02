@@ -88,7 +88,7 @@ def usage():
 	print "List of options :"
 	print "    --output (-o) : Specifies the output file. (Default : stdout)"
 	print "    --print-preambule (-p) : Generate preambule. (Default : True)"
-	print "    --print-code (-p) : Generate code. (Default : True)"
+	print "    --print-code (-c) : Generate code. (Default : True)"
 	print "    --help (-h) : Print this text."
 	print ""
 	print "Author : Maxime Gaudin (2011)"

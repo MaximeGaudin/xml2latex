@@ -19,7 +19,7 @@ Usage
 	   List of options :
 	       --output (-o) : Specifies the output file. (Default : stdout)
 	       --print-preambule (-p) : Generate preambule. (Default : True)
-	       --print-code (-p) : Generate code. (Default : True)
+	       --print-code (-c) : Generate code. (Default : True)
 	       --help (-h) : Print this text.
 	
 	Author : Maxime Gaudin (2011)
