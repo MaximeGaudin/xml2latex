@@ -5,9 +5,9 @@ Author
 Purpose
 -------
 Exporting xml files to latex' arrays can be very boring, time consuming and a pretty common task (especially if your teachers are old school nomenclature's lover).
-That's why I designed a little tool that export automaticaly your xml to a latex-friendly form.
+That's why I designed a little tool that export automatic ally your xml to a latex-friendly form.
 
-Another pretty cool feature is the automatic preambule generation, see the Usage below.
+Another pretty cool feature is the automatic preamble generation, see the Usage below.
 
 Usage
 -----
@@ -26,9 +26,10 @@ Usage
 
 Example
 -------
-** DON'T FORGET TO LOOK AT THE BETTER EXEMPLE SECTION BELOW **
+** DO NOT FORGET TO LOOK AT THE BETTER EXAMPLE SECTION BELOW **
 
 Let's say you have to export this file :
+
 	<annuaire>
 		<somebody>
 			<lastName>GAUDIN</lastName>
@@ -44,6 +45,7 @@ Let's say you have to export this file :
 	</annuaire>
 
 Just call my script with : python xml2latex -c -i yourFile.xml, and then it produces (automatically):
+
 	\begin{annuaire}
 		\begin{somebody}
 			\lastName{GAUDIN}
@@ -69,6 +71,7 @@ In fact, you have 2 use cases :
 - You have to write a xml file espacially for being converted to latex : Yeah, it will be cake walk !
 
 Indeed, xml2latex handles attributes and the last xml will be better if written like :
+
 	<annuaire>
 		<somebody lastName="GAUDIN" surname="Maxime" email="gaudin.maxime@gmail.com"/>
 		<somebody lastName="ST-GEORGES" surname="Julie" email="XXX@gmail.com"/> 
@@ -82,18 +85,22 @@ That's better, let's see the result :
 	\end{annuaire}
 
 BTW, it also handles empty markups like : 
+
 	<jumpline/> 
+
 use them to format your document !
 
 A Last One
 ----------
 Obviously, it handles syntax like :
+
 	<annuaire>
 		<somebody lastName="GAUDIN" surname="Maxime">gaudin.maxime@gmail.com</somebody>
 		<somebody lastName="ST-GEORGES" surname="Julie">XXX@gmail.com</somebody> 
 	</annuaire>
 
 and produces :
+
 	\begin{annuaire}
 		\somebody{GAUDIN}{Maxime}{gaudin.maxime@gmail.com}
 		\somebody{ST-GEORGES}{Julie}{XXX@gmail.com}
